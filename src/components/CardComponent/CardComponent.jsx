@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleNameProduct, WrapperCardStyle, WrapperDiscountText, WrapperPriceText, WrapperReportText, WrapperStyleTextSell } from './style';
 import { StarFilled } from '@ant-design/icons';
 import logo from '../../assets/images/logo.png';
-const CardComponent = () => {
+const CardComponent = (props) => {
+    const {conutInStock, description, image, name, price, rating, type, selled, discount} = props;
     return (
         <WrapperCardStyle
             hoverable
@@ -25,17 +26,17 @@ const CardComponent = () => {
                     borderTopLeftRadius: 3,
                 }}
             />
-            <StyleNameProduct>Iphone</StyleNameProduct>
+            <StyleNameProduct>{name}</StyleNameProduct>
             <WrapperReportText>
                 <span style={{ marginRight: '4px' }}>
-                    <span>4.96 </span>
+                    <span>{rating} </span>
                     <StarFilled style={{ fontSize: '12px', color: '#FFCE3E' }} />
                 </span>
-                <WrapperStyleTextSell> | Đã bán 1000</WrapperStyleTextSell>
+                <WrapperStyleTextSell> | Đã bán {selled || 1000}+</WrapperStyleTextSell>
             </WrapperReportText>
             <WrapperPriceText>
-                <span style={{marginRight: '8px'}}>1.000.000đ</span>
-                <WrapperDiscountText> -5% </WrapperDiscountText>
+                <span style={{marginRight: '8px'}}>{price}</span>
+                <WrapperDiscountText> {discount || 5} % </WrapperDiscountText>
             </WrapperPriceText>
         </WrapperCardStyle>
     );

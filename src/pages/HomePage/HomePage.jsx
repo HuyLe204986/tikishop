@@ -13,9 +13,21 @@ import slider8 from '../../assets/images/slider8.png';
 import slider9 from '../../assets/images/slider9.png';
 import slider10 from '../../assets/images/slider10.jpg';
 import CardComponent from '../../components/CardComponent/CardComponent';
-
+import { useQuery } from '@tanstack/react-query';
+import * as productService from '../../services/ProductService';
 const HomePage = () => {
     const arr = ['Điện thoại', 'Máy tính bảng', 'Laptop', 'Đồng hồ'];
+    const fetchProductAll = async () => {
+        const res = await productService.getAllProduct();
+        return res;
+    }
+    const {isLoading, data: products} = useQuery({
+        queryKey: ['product'],
+        queryFn: fetchProductAll,
+        retry: 3,
+        retryDelay: 1000
+    })
+    console.log('data', products);
     return (
         <>
             <div style={{ width: '1270px', margin: '0 auto' }}>
@@ -42,15 +54,22 @@ const HomePage = () => {
                         ]}
                     />
                     <WrapperProducts>
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
-                        <CardComponent />
+                        {products?.data?.map((product) => {
+                            return (
+                                <CardComponent 
+                                    key={product._id}
+                                    conutInStock = {product.conutInStock}
+                                    description={product.description}
+                                    image={product.image}
+                                    name={product.name}
+                                    price={product.price}
+                                    rating={product.rating}
+                                    type={product.type}
+                                    selled={product.selled}
+                                    discount={product.discount}
+                                />
+                            )
+                        })}
                     </WrapperProducts>
                     <div style={{width: '100%', display: 'flex', justifyContent: 'center', marginTop: '10px'}}>
                         <WrapperButtonMore
