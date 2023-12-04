@@ -2,8 +2,13 @@ import React from 'react';
 import { StyleNameProduct, WrapperCardStyle, WrapperDiscountText, WrapperPriceText, WrapperReportText, WrapperStyleTextSell } from './style';
 import { StarFilled } from '@ant-design/icons';
 import logo from '../../assets/images/logo.png';
+import { useNavigate } from 'react-router-dom';
 const CardComponent = (props) => {
-    const {conutInStock, description, image, name, price, rating, type, selled, discount} = props;
+    const {conutInStock, description, image, name, price, rating, type, selled, discount, id} = props;
+    const navigate = useNavigate()
+    const handleDetailsProduct = (id) => {
+        navigate(`/product-details/${id}`)
+    }
     return (
         <WrapperCardStyle
             hoverable
@@ -12,7 +17,8 @@ const CardComponent = (props) => {
                 width: 200,
             }}
             bodyStyle={{ padding: '10px' }}
-            cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+            cover={<img alt="example" src={image} />}
+            onClick={() => handleDetailsProduct(id)}
         >
             <img
                 src={logo}
@@ -35,8 +41,8 @@ const CardComponent = (props) => {
                 <WrapperStyleTextSell> | Đã bán {selled || 1000}+</WrapperStyleTextSell>
             </WrapperReportText>
             <WrapperPriceText>
-                <span style={{marginRight: '8px'}}>{price}</span>
-                <WrapperDiscountText> {discount || 5} % </WrapperDiscountText>
+                <span style={{marginRight: '8px'}}>{price.toLocaleString()}</span>
+                <WrapperDiscountText> - {discount || 5} % </WrapperDiscountText>
             </WrapperPriceText>
         </WrapperCardStyle>
     );

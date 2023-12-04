@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TypeProduct from '../../components/TypeProduct/TypeProduct';
 import { WrapperButtonMore, WrapperTypeProduct, WrapperProducts } from './style';
 import SliderComponent from '../../components/SliderComponent/SliderComponent';
@@ -15,21 +15,33 @@ import slider10 from '../../assets/images/slider10.jpg';
 import CardComponent from '../../components/CardComponent/CardComponent';
 import { useQuery } from '@tanstack/react-query';
 import * as productService from '../../services/ProductService';
+import { useSelector } from 'react-redux';
+import Loading from '../../components/LoadingComponent/Loading';
+import { useDebounce } from '../../hooks/useDebounce';
 const HomePage = () => {
+    const searchProduct = useSelector((state) => state?.product?.search)
+    const searchDebounce = useDebounce(searchProduct, 500)
+    const [limit, setLimit] = useState(6)
+    const [loading, setLoading] = useState(false)
     const arr = ['Điện thoại', 'Máy tính bảng', 'Laptop', 'Đồng hồ'];
-    const fetchProductAll = async () => {
-        const res = await productService.getAllProduct();
-        return res;
+
+    const fetchProductAll = async (context) => {
+        const limit = context?.queryKey && context?.queryKey[1]
+        const search = context?.queryKey && context?.queryKey[2]
+        const res = await productService.getAllProduct(search, limit);
+        return res;   
     }
-    const {isLoading, data: products} = useQuery({
-        queryKey: ['product'],
+    
+    const {isLoading, data: products, isPlaceholderData } = useQuery({
+        queryKey: ['product', limit, searchDebounce],
         queryFn: fetchProductAll,
         retry: 3,
-        retryDelay: 1000
+        retryDelay: 1000,
+        placeholderData: true
     })
-    console.log('data', products);
+    // console.log("prev", isPlaceholderData, isLoading);
     return (
-        <>
+        <Loading isLoading={isLoading || loading}>
             <div style={{ width: '1270px', margin: '0 auto' }}>
                 <WrapperTypeProduct>
                     {arr.map((item) => {
@@ -67,6 +79,7 @@ const HomePage = () => {
                                     type={product.type}
                                     selled={product.selled}
                                     discount={product.discount}
+                                    id={product._id}
                                 />
                             )
                         })}
@@ -76,18 +89,20 @@ const HomePage = () => {
                             textButton="Xem thêm"
                             type="outline"
                             styleButton={{
-                                border: '1px solid rgb(11, 116, 229)',
-                                color: 'rgb(11, 116, 229)',
+                                border: `1px solid ${products?.total === products?.data?.length ? '#f5f5f5' : '#9255FD'}`,
+                                color: `${products?.total === products?.data?.length ? '#f5f5f5' : '#9255FD'}`,
                                 width: '240px',
                                 height: '38px',
                                 borderRadius: '4px',
                             }}
-                            styleTextButton={{fontWeight: 500}}
+                            disabled={products?.total === products?.data?.length || products?.totalPage === 1}
+                            styleTextButton={{fontWeight: 500, color: products?.total === products?.data?.length && '#fff'}}
+                            onClick = {() => setLimit((prev) => prev + 6)}
                         />
                     </div>
                 </div>
             </div>
-        </>
+        </Loading>
     );
 };
 
