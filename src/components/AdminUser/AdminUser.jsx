@@ -90,8 +90,8 @@ const AdminUser = () => {
     // console.log('dataUpdated', dataUpdated);
 
     const getAllUsers = async () => {
-        const res = await userService.getAllUser();
-        console.log(res);
+        const res = await userService.getAllUser(user?.access_token);
+        console.log('get all users',res);
         return res;
     };
 
@@ -123,7 +123,7 @@ const AdminUser = () => {
         // setIsOpenDrawer(true);
     }, [rowSelected, isOpenDrawer]);
 
-    console.log('stateUserDetails', stateUserDetails);
+    // console.log('stateUserDetails', stateUserDetails);
     const handleDetailsProduct = () => {
         setIsOpenDrawer(true);
     };

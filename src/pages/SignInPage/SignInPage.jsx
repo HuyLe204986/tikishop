@@ -5,7 +5,7 @@ import { WrapperContainerLeft, WrapperContainerRight, WrapperTextLight } from '.
 import InputForm from '../../components/InputForm/InputForm';
 import ButtonComponent from '../../components/ButtonComponent/ButtonComponent';
 import imageLogo from '../../assets/images/logo-login.png'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as userService from '../../services/UserService'
 import { jwtDecode } from "jwt-decode";
 import { useMutationHooks } from '../../hooks/useMutationHook';
@@ -18,7 +18,7 @@ const SignInPage = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const dispatch = useDispatch();
-
+    const location = useLocation();
     //navigate
     const handleNavigateSignUp = () => {
         navigate("/sign-up")
@@ -31,10 +31,13 @@ const SignInPage = () => {
     console.log('mutation', mutation);
 
     const {data, isPending, isSuccess} = mutation
-
     useEffect(() => {
         if(isSuccess) {
-            navigate('/')
+            if(location?.state) {
+                navigate(location?.state)
+            }else {
+                navigate('/')
+            }
             localStorage.setItem('access_token', JSON.stringify(data?.access_token))
             if(data?.access_token) {
                 const decoded = jwtDecode(data?.access_token);

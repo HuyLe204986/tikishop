@@ -19,11 +19,17 @@ import ButtonComponent from '../ButtonComponent/ButtonComponent';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../LoadingComponent/Loading';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { addOrderProduct } from '../../redux/slides/orderSlide';
+import { convertPrice } from '../../utils';
 
 const ProductDetailsComponent = ({ idProduct }) => {
     const [numProduct, setNumProduct] = useState(1)
     const user  = useSelector((state) => state.user)
+    const navigate = useNavigate()
+    const location = useLocation()
+    const dispatch = useDispatch()
     const onChange = (value) => {
         setNumProduct(Number(value));
     };
@@ -46,7 +52,25 @@ const ProductDetailsComponent = ({ idProduct }) => {
             }
         }
     }
-
+    const handleAddOrderProduct = () => {
+        if(!user?.id) {
+            //dùng location pathname để khi đăng nhập thành công thì vẫn ở trang đặt hàng thay vì homepage
+            navigate('/sign-in', {state: location?.pathname})
+        }else {
+            dispatch(addOrderProduct({
+                orderItem: {
+                    name: productDetails?.name,
+                    amount: numProduct,
+                    image: productDetails?.image,
+                    price: productDetails?.price,
+                    product: productDetails?._id,
+                    // discount: productDetails?.discount,
+                    // countInstock: productDetails?.countInStock
+                }
+            }))
+        }
+    }
+    
     const { isLoading, data: productDetails } = useQuery({
         queryKey: ['product-details', idProduct], 
         queryFn: fetchGetDetailsProduct, 
@@ -91,7 +115,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                         <WrapperStyleTextSell> | Đã bán 1000+</WrapperStyleTextSell>
                     </div>
                     <WrapperPriceProduct>
-                        <WrapperPriceTextProduct>{productDetails?.price}</WrapperPriceTextProduct>
+                        <WrapperPriceTextProduct>{convertPrice(productDetails?.price)}</WrapperPriceTextProduct>
                     </WrapperPriceProduct>
                     <WrapperAddressProduct>
                         <span>Giao đến </span>
@@ -128,6 +152,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                                 border: 'none',
                                 borderRadius: '4px',
                             }}
+                            onClick={handleAddOrderProduct}
                             textButton={'Chọn mua'}
                             styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
                         ></ButtonComponent>

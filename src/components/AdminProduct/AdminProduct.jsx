@@ -32,7 +32,8 @@ const AdminProduct = () => {
         image: '',
         type: '',
         countInStock: '',
-        newType: '', 
+        newType: '',
+        discount: '',
     });
 
     const [stateProductDetails, setStateProductDetails] = useState({
@@ -43,6 +44,7 @@ const AdminProduct = () => {
         image: '',
         type: '',
         countInStock: '',
+        discount: '',
     });
 
     const renderAction = () => {
@@ -64,7 +66,7 @@ const AdminProduct = () => {
 
     // call API
     const mutation = useMutationHooks((data) => {
-        const { name, price, description, rating, image, type, countInStock } = data;
+        const { name, price, description, rating, image, type, countInStock, discount } = data;
         const res = productService.createProduct({
             name,
             price,
@@ -73,6 +75,7 @@ const AdminProduct = () => {
             image,
             type,
             countInStock,
+            discount,
         });
         return res;
     });
@@ -144,13 +147,14 @@ const AdminProduct = () => {
         const res = await productService.getDetailsProduct(rowSelected);
         if (res?.data) {
             setStateProductDetails({
-                name: res?.data.name,
-                price: res?.data.price,
-                description: res?.data.description,
-                rating: res?.data.rating,
-                image: res?.data.image,
-                type: res?.data.type,
-                countInStock: res?.data.countInStock,
+                name: res?.data?.name,
+                price: res?.data?.price,
+                description: res?.data?.description,
+                rating: res?.data?.rating,
+                image: res?.data?.image,
+                type: res?.data?.type,
+                countInStock: res?.data?.countInStock,
+                discount: res?.data?.discount,
             });
         }
         // console.log('res', res);
@@ -399,6 +403,7 @@ const AdminProduct = () => {
             image: '',
             type: '',
             countInStock: '',
+            discount: '',
         });
         form.resetFields();
     };
@@ -435,7 +440,8 @@ const AdminProduct = () => {
             image: stateProduct.image,
             type: stateProduct.type === 'add_type' ? stateProduct.newType : stateProduct.type,
             countInStock: stateProduct.countInStock,
-        }
+            discount: stateProduct.discount,
+        };
         mutation.mutate(params, {
             onSettled: () => {
                 queryProduct.refetch();
@@ -575,20 +581,16 @@ const AdminProduct = () => {
                                 onChange={handleChangeSelect}
                                 options={renderOptions(typeProduct?.data?.data)}
                             />
+                        </Form.Item>
+                        {stateProduct.type === 'add_type' && (
+                            <Form.Item
+                                label="New type"
+                                name="newType"
+                                rules={[{ required: true, message: 'Please input your type!' }]}
+                            >
+                                <InputComponent value={stateProduct.newType} onChange={handleOnChange} name="newType" />
                             </Form.Item>
-                            {stateProduct.type === 'add_type' && (
-                                <Form.Item
-                                    label="New type"
-                                    name="newType"
-                                    rules={[{ required: true, message: 'Please input your type!' }]}
-                                >
-                                    <InputComponent
-                                        value={stateProduct.newType}
-                                        onChange={handleOnChange}
-                                        name="newType"
-                                    />
-                                </Form.Item>
-                            )}
+                        )}
 
                         <Form.Item
                             label="Count InStock"
@@ -647,6 +649,14 @@ const AdminProduct = () => {
                             ]}
                         >
                             <InputComponent value={stateProduct.rating} onChange={handleOnChange} name="rating" />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Discount"
+                            name="discount"
+                            rules={[{ required: true, message: 'Please input your discount of product!' }]}
+                        >
+                            <InputComponent value={stateProduct.discount} onChange={handleOnChange} name="discount" />
                         </Form.Item>
 
                         <Form.Item
@@ -808,6 +818,18 @@ const AdminProduct = () => {
                                 value={stateProductDetails.rating}
                                 onChange={handleOnChangeDetails}
                                 name="rating"
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Discount"
+                            name="discount"
+                            rules={[{ required: true, message: 'Please input your discount of product!' }]}
+                        >
+                            <InputComponent
+                                value={stateProductDetails.discount}
+                                onChange={handleOnChangeDetails}
+                                name="discount"
                             />
                         </Form.Item>
 
