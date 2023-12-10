@@ -14,10 +14,13 @@ import * as OrderService from '../../services/OrderService'
 import Loading from '../../components/LoadingComponent/Loading';
 import * as message from '../../components/Message/Message'
 import { updateUser } from '../../redux/slides/userSlide';
+import { useNavigate } from 'react-router-dom';
+import { removeAllOrderProduct } from '../../redux/slides/orderSlide';
 
 const PaymentPage = () => {
   const order = useSelector((state) => state.order)
   const user = useSelector((state) => state.user)
+  const navigate = useNavigate();
 
   const [delivery, setDelivery] = useState('fast')
   const [payment, setPayment] = useState('later_money')
@@ -62,7 +65,8 @@ const PaymentPage = () => {
 
   const priceDiscountMemo = useMemo(() => {
     const result = order?.orderItemsSlected?.reduce((total, cur) => {
-      return total + ((cur.discount * cur.amount))
+      const totalDiscount = cur.discount ? cur.discount : 0
+      return total + (priceMemo * (totalDiscount * cur.amount) / 100)
     },0)
     if(Number(result)){
       return result
@@ -98,7 +102,7 @@ const PaymentPage = () => {
 
   const mutationAddOrder = useMutationHooks(
     (data) => {
-      const { id,
+      const {
         token,
         ...rests } = data
       const res = OrderService.createOrder(
@@ -134,7 +138,21 @@ const PaymentPage = () => {
   console.log(mutationAddOrder);
   useEffect(() => {
     if (isSuccess && dataAdd?.status === 'OK') {
+      const arrayOrdered = []
+      order?.orderItemsSlected?.forEach(element => {
+        arrayOrdered.push(element.product)
+      });
+      dispatch(removeAllOrderProduct({listChecked: arrayOrdered}))
+
       message.success('Đặt hàng thành công')
+      navigate('/order-success', {
+        state: {
+          delivery,
+          payment,
+          orders: order?.orderItemsSlected,
+          totalPriceMemo: totalPriceMemo
+        }
+      })
     } else if (isError) {
       message.error()
     }
@@ -218,7 +236,7 @@ const PaymentPage = () => {
                   </div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <span>Giảm giá</span>
-                    <span style={{color: '#000', fontSize: '14px', fontWeight: 'bold'}}>{`${priceDiscountMemo} %`}</span>
+                    <span style={{color: '#000', fontSize: '14px', fontWeight: 'bold'}}>{convertPrice(priceDiscountMemo)}</span>
                   </div>
                   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <span>Phí giao hàng</span>

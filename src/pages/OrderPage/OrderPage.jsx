@@ -8,6 +8,7 @@ import {
     WrapperListOrder,
     WrapperRight,
     WrapperStyleHeader,
+    WrapperStyleHeaderDilivery,
     WrapperTotal,
 } from './style';
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
@@ -30,6 +31,7 @@ import { useNavigate } from 'react-router-dom';
 import * as userService from '../../services/UserService';
 import { useMutationHooks } from '../../hooks/useMutationHook';
 import { updateUser } from '../../redux/slides/userSlide';
+import StepComponent from '../../components/StepComponent/StepComponent';
 
 const OrderPage = () => {
     const order = useSelector((state) => state.order);
@@ -56,13 +58,17 @@ const OrderPage = () => {
         }
     };
 
-    const handleChangeCount = (type, idProduct) => {
-        if (type === 'increase') {
-            dispatch(increaseAmount({ idProduct }));
-        } else {
-            dispatch(decreaseAmount({ idProduct }));
+    const handleChangeCount = (type, idProduct, limited) => {
+        if(type === 'increase') {
+          if(!limited) {
+            dispatch(increaseAmount({idProduct}))
+          }
+        }else {
+          if(!limited) {
+            dispatch(decreaseAmount({idProduct}))
+          }
         }
-    };
+      }
 
     const handleDeleteOrder = (idProduct) => {
         dispatch(removeOrderProduct({ idProduct }));
@@ -191,13 +197,35 @@ const OrderPage = () => {
     const handleChangeAddress = () => {
         setIsOpenModalUpdateInfo(true)
     }
-
+    
+    const itemsDelivery = [
+        {
+          title: '20.000 VND',
+          description: 'Dưới 200.000 VND',
+        },
+        {
+          title: '10.000 VND',
+          description: 'Từ 200.000 VND đến dưới 500.000 VND',
+        },
+        {
+          title: 'Free ship',
+          description : 'Trên 500.000 VND',
+        },
+      ]
     return (
         <div style={{ background: '#f5f5fa', with: '100%', height: '100vh' }}>
             <div style={{ height: '100%', width: '1270px', margin: '0 auto' }}>
                 <h3>Giỏ hàng</h3>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <WrapperLeft>
+                        <WrapperStyleHeaderDilivery>
+                            <StepComponent 
+                                items={itemsDelivery} 
+                                current={diliveryPriceMemo === 10000 ? 
+                                    2 : diliveryPriceMemo === 20000 ? 
+                                    1 : order.orderItemsSlected.length === 0 ? 0:  3}
+                                />
+                        </WrapperStyleHeaderDilivery>
                         <WrapperStyleHeader>
                             <span style={{ display: 'inline-block', width: '390px' }}>
                                 <Checkbox
@@ -273,7 +301,7 @@ const OrderPage = () => {
                                                         background: 'transparent',
                                                         cursor: 'pointer',
                                                     }}
-                                                    onClick={() => handleChangeCount('decrease', order?.product)}
+                                                    onClick={() => handleChangeCount('decrease', order?.product,  order?.amount === 1)}
                                                 >
                                                     <MinusOutlined style={{ color: '#000', fontSize: '10px' }} />
                                                 </button>
@@ -281,6 +309,7 @@ const OrderPage = () => {
                                                     defaultValue={order?.amount}
                                                     value={order?.amount}
                                                     size="small"
+                                                    min={1} max={order?.countInstock}
                                                 />
                                                 <button
                                                     style={{
@@ -288,7 +317,7 @@ const OrderPage = () => {
                                                         background: 'transparent',
                                                         cursor: 'pointer',
                                                     }}
-                                                    onClick={() => handleChangeCount('increase', order?.product)}
+                                                    onClick={() => handleChangeCount('increase', order?.product, order?.amount === order.countInstock, order?.amount === 1)}
                                                 >
                                                     <PlusOutlined style={{ color: '#000', fontSize: '10px' }} />
                                                 </button>
@@ -346,7 +375,7 @@ const OrderPage = () => {
                                     <span>Giảm giá</span>
                                     <span
                                         style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}
-                                    >{`${priceDiscountMemo} %`}</span>
+                                    >{convertPrice(priceDiscountMemo)}</span>
                                 </div>
                                 <div
                                     style={{

@@ -20,6 +20,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     const [userName, setUserName] = useState('');
     const [userAvatar, setUserAvatar] = useState('');
     const [search,setSearch] = useState('')
+    const [isOpenPopup,setIsOpenPopup] = useState(false)
     const handleNavigateLogin = () => {
         navigate('/sign-in');
     };
@@ -41,13 +42,31 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
 
     const content = (
         <div>
-            <WrapperContentPopup onClick={() => navigate('/profile-user')}>Thông tin người dùng</WrapperContentPopup>
+            <WrapperContentPopup onClick={() => handleClickNavigate('profile')}>Thông tin người dùng</WrapperContentPopup>
+            <WrapperContentPopup onClick={() => handleClickNavigate('my-order')}>Đơn hàng của tôi</WrapperContentPopup>
             {user?.isAdmin && (
-                <WrapperContentPopup onClick={() => navigate('/system/admin')}>Quản lý hệ thống</WrapperContentPopup>
+                <WrapperContentPopup onClick={() => handleClickNavigate('admin')}>Quản lý hệ thống</WrapperContentPopup>
             )}
-            <WrapperContentPopup onClick={handleLogout}>Đăng xuất</WrapperContentPopup>
+            <WrapperContentPopup onClick={() => handleClickNavigate()}>Đăng xuất</WrapperContentPopup>
         </div>
     );
+
+    const handleClickNavigate = (type) => {
+        if(type === 'profile') {
+          navigate('/profile-user')
+        }else if(type === 'admin') {
+          navigate('/system/admin')
+        }else if(type === 'my-order') {
+          navigate('/my-order',{ state : {
+              id: user?.id,
+              token : user?.access_token
+            }
+          })
+        }else {
+          handleLogout()
+        }
+        setIsOpenPopup(false)
+    }
 
     const onSearch = (e) => {
         setSearch(e.target.value)
@@ -58,7 +77,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
         <div style={{ width: '100%', display: 'flex', background: 'rgb(26, 148, 255)', justifyContent: 'center' }}>
             <WrapperHeader style={{justifyContent: isHiddenCart && isHiddenSearch ?  'space-between' : 'unset'}}>
                 <Col span={5}>
-                    <WrapperTextHeader style={{cursor: 'pointer'}} onClick={() => {navigate('/')}}>SHOP CONG NGHE</WrapperTextHeader>
+                    <WrapperTextHeader style={{cursor: 'pointer'}} to='/'>SHOP CONG NGHE</WrapperTextHeader>
                 </Col>
                 {!isHiddenSearch && (
                     <Col span={13}>
@@ -89,8 +108,8 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                             )}
                             {user?.access_token ? (
                                 <>
-                                    <Popover content={content} trigger="click">
-                                        <div style={{ cursor: 'pointer' }}>{userName.length ? userName : user?.email}</div>
+                                    <Popover content={content} trigger="click" open={isOpenPopup}>
+                                        <div style={{ cursor: 'pointer' }} onClick={() => setIsOpenPopup((prev) => !prev)}>{userName.length ? userName : user?.email}</div>
                                     </Popover>
                                 </>
                             ) : (
