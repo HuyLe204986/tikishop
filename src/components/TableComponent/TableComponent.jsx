@@ -14,7 +14,6 @@ const TableComponent = (props) => {
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             setRowSelectedKeys(selectedRowKeys)
-            console.log(`selectedRowKeys: ${selectedRowKeys}`);
         },
         // getCheckboxProps: (record) => ({
         //     disabled: record.name === 'Disabled User',

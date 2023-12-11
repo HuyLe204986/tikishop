@@ -21,7 +21,6 @@ export function App() {
         if(decoded?.id) {
             handleGetDetailsUser(decoded?.id, storageData)
         }
-        console.log('storage data: ' +storageData);
         setIsLoading(false);
     }, []);
 
@@ -48,14 +47,12 @@ export function App() {
         return config;
     }, (error) => {
         // Do something with request error
-        console.log('da bi loi');
         return Promise.reject(error);
     });
 
     const handleGetDetailsUser = async (id, token) => {
         const res = await userService.getDetailsUser(id, token);
         dispatch(updateUser({...res?.data, access_token: token}))
-        console.log('res', res);
     }
 
     // const fetchApi = async () => {
@@ -64,7 +61,6 @@ export function App() {
     // }
     // // Queries
     // const query = useQuery({ queryKey: ['todos'], queryFn: fetchApi })
-    // console.log('query', query);
     return (
         <div>
             <Loading isLoading={isLoading}>

@@ -158,7 +158,6 @@ const PaymentPage = () => {
 
   const {isPending: isLoading, data} = mutationUpdate
   const {data: dataAdd,isPending: isLoadingAddOrder, isSuccess, isError} = mutationAddOrder
-  console.log(mutationAddOrder);
   useEffect(() => {
     if (isSuccess && dataAdd?.status === 'OK') {
       const arrayOrdered = []

@@ -87,11 +87,10 @@ const AdminUser = () => {
         isError: isErrorDeletedMany,
     } = mutationDeletedMany;
 
-    // console.log('dataUpdated', dataUpdated);
+    
 
     const getAllUsers = async () => {
         const res = await userService.getAllUser(user?.access_token);
-        console.log('get all users',res);
         return res;
     };
 
@@ -107,7 +106,6 @@ const AdminUser = () => {
                 avatar: res?.data.avatar,
             });
         }
-        // console.log('res', res);
         setIsLoadingUpdate(false);
     };
 
@@ -123,7 +121,6 @@ const AdminUser = () => {
         // setIsOpenDrawer(true);
     }, [rowSelected, isOpenDrawer]);
 
-    // console.log('stateUserDetails', stateUserDetails);
     const handleDetailsProduct = () => {
         setIsOpenDrawer(true);
     };
@@ -336,12 +333,10 @@ const AdminUser = () => {
     }, [isSuccessUpdated]);
 
     const handleOnChangeDetails = (e) => {
-        // console.log('check', e.target.name, e.target.value);
         setStateUserDetails({
             ...stateUserDetails,
             [e.target.name]: e.target.value,
         });
-        // console.log('e.target.name: ', e.target.value);
     };
 
     const handleOnChangeAvatarDetails = async ({ fileList }) => {

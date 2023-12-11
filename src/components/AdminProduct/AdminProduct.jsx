@@ -129,11 +129,10 @@ const AdminProduct = () => {
         isError: isErrorDeletedMany,
     } = mutationDeletedMany;
 
-    // console.log('dataUpdated', dataUpdated);
+    
 
     const getAllProduct = async () => {
         const res = await productService.getAllProduct();
-        // console.log(res);
         return res;
     };
 
@@ -151,7 +150,6 @@ const AdminProduct = () => {
                 discount: res?.data?.discount,
             });
         }
-        // console.log('res', res);
         setIsLoadingUpdate(false);
     };
 
@@ -171,8 +169,6 @@ const AdminProduct = () => {
         // setIsOpenDrawer(true);
     }, [rowSelected, isOpenDrawer]);
 
-    // console.log('stateProductDetails', stateProductDetails);
-    console.log('stateProduct', stateProduct);
     const handleDetailsProduct = () => {
         setIsOpenDrawer(true);
     };
@@ -185,7 +181,6 @@ const AdminProduct = () => {
         queryKey: ['type-product'],
         queryFn: fetchAllTypeProduct,
     });
-    console.log('type', typeProduct);
     const { isLoading: isLoadingProduct, data: products } = queryProduct;
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -349,7 +344,6 @@ const AdminProduct = () => {
             };
         });
 
-    // console.log('data', data);
     useEffect(() => {
         if (isSuccess && data?.status === 'OK') {
             message.success();
@@ -445,23 +439,20 @@ const AdminProduct = () => {
                 queryProduct.refetch();
             },
         });
-        // console.log('finished', stateProduct);
+    
     };
     const handleOnChange = (e) => {
         setStateProduct({
             ...stateProduct,
             [e.target.name]: e.target.value,
         });
-        // console.log('e.target.name: ', e.target.value);
     };
 
     const handleOnChangeDetails = (e) => {
-        console.log('check', e.target.name, e.target.value);
         setStateProductDetails({
             ...stateProductDetails,
             [e.target.name]: e.target.value,
         });
-        // console.log('e.target.name: ', e.target.value);
     };
 
     const handleOnChangeAvatar = async ({ fileList }) => {

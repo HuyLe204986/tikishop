@@ -28,8 +28,6 @@ const SignInPage = () => {
     const mutation = useMutationHooks(
         data => userService.loginUser(data)
     )
-    console.log('mutation', mutation);
-
     const {data, isPending, isSuccess} = mutation
     useEffect(() => {
         if(isSuccess) {
@@ -41,7 +39,6 @@ const SignInPage = () => {
             localStorage.setItem('access_token', JSON.stringify(data?.access_token))
             if(data?.access_token) {
                 const decoded = jwtDecode(data?.access_token);
-                console.log('decoded', decoded);
                 if(decoded?.id) {
                     handleGetDetailsUser(decoded?.id, data?.access_token)
                 }
@@ -68,7 +65,6 @@ const SignInPage = () => {
     const handleGetDetailsUser = async (id, token) => {
         const res = await userService.getDetailsUser(id, token);
         dispatch(updateUser({...res?.data, access_token: token}))
-        console.log('res', res);
     }
    
     return (

@@ -28,7 +28,6 @@ const SignUpPage = () => {
         data => userService.signupUser(data)
     )
     const {data, isPending, isSuccess, isError} = mutation
-    console.log(mutation);
     useEffect(() => {
         if(isSuccess) {
             message.success();
@@ -54,7 +53,6 @@ const SignUpPage = () => {
         mutation.mutate({
             email, password, confirmPassword
         })
-        // console.log('signUp', email, password, confirmPassword);
     }
 
     return (

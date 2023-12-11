@@ -65,7 +65,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
         const orderRedux = order?.orderItems?.find((item) => item.product === productDetails?._id) 
         if((orderRedux?.amount + numProduct) <= orderRedux?.countInstock || (!orderRedux && productDetails?.countInStock > 0) ) {
             setErrorLimitOrder(false)
-        } else {
+        }else if (productDetails?.countInStock === 0) {
             setErrorLimitOrder(true)
         }
     },[numProduct])
@@ -109,7 +109,6 @@ const ProductDetailsComponent = ({ idProduct }) => {
         queryFn: fetchGetDetailsProduct, 
         enabled: !!idProduct
     });
-    console.log('productDetails', productDetails);
     return (
         <Loading isLoading={isLoading}>
             <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px' }}>
@@ -155,7 +154,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
                         <span className="address">{user?.address}</span> -
                         <span className="change-address"> Đổi địa chỉ</span>
                     </WrapperAddressProduct>
-                    <LikeButtonComponent dataHref={"https://developers.facebook.com/docs/plugins/"} />
+                    <LikeButtonComponent 
+                        dataHref= {
+                            process.env.REACT_APP_IS_LOCAL 
+                            ? "https://developers.facebook.com/docs/plugins/" 
+                            : window.location.href
+                        }
+                    />
                     <div
                         style={{
                             margin: '10px 0 20px',
@@ -206,7 +211,14 @@ const ProductDetailsComponent = ({ idProduct }) => {
                         ></ButtonComponent>
                     </div>
                 </Col>
-                <CommentComponent dataHref={"https://developers.facebook.com/docs/plugins/"} width="1270"/>
+                <CommentComponent 
+                    dataHref={
+                        process.env.REACT_APP_IS_LOCAL 
+                        ? "https://developers.facebook.com/docs/plugins/" 
+                        : window.location.href
+                    } 
+                    width="1270"
+                />
             </Row>
         </Loading>
     );

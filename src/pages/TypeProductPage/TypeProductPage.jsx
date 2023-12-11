@@ -20,11 +20,9 @@ const TypeProductPage = () => {
         total: 1,
     });
     const { state } = useLocation();
-    // console.log('location: ' ,location);
     const fetchProductType = async (type, page, limit) => {
         setLoading(true);
         const res = await productService.getProductType(type, page, limit);
-        // console.log('res trong type: ', res);
         if (res?.status == 'OK') {
             setLoading(false);
             setProducts(res?.data);

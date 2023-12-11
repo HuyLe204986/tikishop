@@ -25,7 +25,6 @@ const MyOrder = () => {
         enabled: !!state?.id && !!state?.token 
     })
     const { isPending: isLoading, data } = queryOrder
-    console.log('data', data);
     const renderProduct =  (data) => {
         return data?.map((order) => {
             return <WrapperHeaderItem key={order?._id}> 

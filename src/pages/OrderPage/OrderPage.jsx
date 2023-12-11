@@ -169,10 +169,8 @@ const OrderPage = () => {
         const res = userService.updateUser(id, { ...rests }, token);
         return res;
     });
-    console.log('user', user);
     const { isPending: isLoading, data } = mutationUpdate;
     const handleUpdateInforUser = () => {
-        // console.log('state user', stateUserDetails);
         const { name, address, city, phone } = stateUserDetails;
         if (name && address && city && phone) {
             mutationUpdate.mutate(
@@ -251,7 +249,7 @@ const OrderPage = () => {
                         <WrapperListOrder>
                             {order?.orderItems?.map((order) => {
                                 return (
-                                    <WrapperItemOrder>
+                                    <WrapperItemOrder key={order?.product}>
                                         <div
                                             style={{
                                                 width: '390px',

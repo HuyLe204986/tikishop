@@ -51,7 +51,6 @@ const HomePage = () => {
         retryDelay: 1000,
         placeholderData: true
     })
-    // console.log("prev", isPlaceholderData, isLoading);
     return (
         <Loading isLoading={isLoading || loading}>
             <div style={{ width: '1270px', margin: '0 auto' }}>

@@ -24,7 +24,6 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     const handleNavigateLogin = () => {
         navigate('/sign-in');
     };
-    // console.log('user', user);
     const handleLogout = async () => {
         setLoading(true);
         await userService.logOutUser();

@@ -30,10 +30,8 @@ const AdminPage = () => {
     }
 
     const handleOnClick = ({key}) => { 
-        // console.log('click', item, key, keyPath, domEvent);
         setKeySelected(key);
     }
-    console.log('key', keySelected);
     return (
         <>
             <HeaderComponent isHiddenSearch isHiddenCart/>
