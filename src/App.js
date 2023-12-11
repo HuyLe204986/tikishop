@@ -9,7 +9,7 @@ import { isJsonString } from './utils'
 import { jwtDecode } from 'jwt-decode';
 import * as userService from './services/UserService'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateUser } from './redux/slides/userSlide';
+import { resetUser, updateUser } from './redux/slides/userSlide';
 import Loading from './components/LoadingComponent/Loading';
 export function App() {
     const dispatch = useDispatch();
@@ -40,9 +40,16 @@ export function App() {
         // Do something before request is sent
         const currentTime = new Date();
         const  { decoded } = handleDecoded();
+        let storageRefreshToken = localStorage.getItem('refresh_token')
+        const refreshToken = JSON.parse(storageRefreshToken)
+        const decodedRefreshToken =  jwtDecode(refreshToken)
         if(decoded?.exp < currentTime.getTime() / 1000) {
-            const data = await userService.refreshToken();
-            config.headers['token'] = `Bearer ${data?.access_token}`
+            if(decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
+                const data = await userService.refreshToken(refreshToken)
+                config.headers['token'] = `Bearer ${data?.access_token}`
+              }else {
+                dispatch(resetUser())
+              }
         }
         return config;
     }, (error) => {
@@ -51,8 +58,10 @@ export function App() {
     });
 
     const handleGetDetailsUser = async (id, token) => {
+        let storageRefreshToken = localStorage.getItem('refresh_token')
+        const refreshToken = JSON.parse(storageRefreshToken)
         const res = await userService.getDetailsUser(id, token);
-        dispatch(updateUser({...res?.data, access_token: token}))
+        dispatch(updateUser({...res?.data, access_token: token, refreshToken: refreshToken}))
     }
 
     // const fetchApi = async () => {
@@ -62,7 +71,7 @@ export function App() {
     // // Queries
     // const query = useQuery({ queryKey: ['todos'], queryFn: fetchApi })
     return (
-        <div>
+        <div style={{height: '100vh', width: '100%'}}>
             <Loading isLoading={isLoading}>
                 <Router>
                     <Routes>

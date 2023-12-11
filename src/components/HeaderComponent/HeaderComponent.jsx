@@ -36,7 +36,6 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
         setUserName(user?.name)
         setUserAvatar(user?.avatar)
         setLoading(false);
-
     }, [user?.name, user?.avatar])
 
     const content = (

@@ -294,8 +294,11 @@ const PaymentPage = () => {
                   </span>
                 </WrapperTotal>
               </div>
+              {console.log('paypal', payment)}
               {payment === 'paypal' && sdkReady ? (
+  
                 <div style={{width: '320px'}}>
+                  Than thoan paypal
                   <PayPalButton
                     amount={Math.round(totalPriceMemo / 30000)}
                     // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
