@@ -28,6 +28,7 @@ const SignUpPage = () => {
         data => userService.signupUser(data)
     )
     const {data, isPending, isSuccess, isError} = mutation
+    console.log('data', mutation);
     useEffect(() => {
         if(isSuccess) {
             message.success();

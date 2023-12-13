@@ -29,6 +29,7 @@ const SignInPage = () => {
         data => userService.loginUser(data)
     )
     const {data, isPending, isSuccess} = mutation
+    // console.log('mutation', mutation);
     useEffect(() => {
         if(isSuccess) {
             if(location?.state) {
