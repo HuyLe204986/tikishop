@@ -90,20 +90,20 @@ const SignUpPage = () => {
                         }
                         </span>
                         <InputForm placeholder="password" style={{ marginBottom: '10px' }} type={isShowPassword ? "text" : "password"}
-                        value={password} onChange={handleOnchangePassword} 
+                            value={password} onChange={handleOnchangePassword} 
                         />
                     </div>
 
                     <div style={{ position: 'relative' }}>
                         <span
-                        onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
-                        style={{
-                            zIndex: 10,
-                            position: 'absolute',
-                            top: '50%',
-                            transform: 'translateY(-40%)',
-                            right: '8px'
-                        }}
+                            onClick={() => setIsShowConfirmPassword(!isShowConfirmPassword)}
+                            style={{
+                                zIndex: 10,
+                                position: 'absolute',
+                                top: '50%',
+                                transform: 'translateY(-40%)',
+                                right: '8px'
+                            }}
                         >{
                             isShowConfirmPassword ? (
                             <EyeFilled />
@@ -113,7 +113,7 @@ const SignUpPage = () => {
                         }
                         </span>
                         <InputForm placeholder="comfirm password" type={isShowConfirmPassword ? "text" : "password"}
-                        value={confirmPassword} onChange={handleOnchangeConfirmPassword}
+                            value={confirmPassword} onChange={handleOnchangeConfirmPassword}
                         />
                     </div>
                     {data?.status === 'ERR' && <span style={{color: 'red'}}>{data?.message}</span>}

@@ -93,14 +93,14 @@ const SignInPage = () => {
                     />
                     <div style={{ position: 'relative' }}>
                         <span
-                        onClick={() => setIsShowPassword(!isShowPassword)}
-                        style={{
-                            zIndex: 10,
-                            position: 'absolute',
-                            top: '55%',
-                            transform: "translateY(-50%)",
-                            right: '8px'
-                        }}
+                            onClick={() => setIsShowPassword(!isShowPassword)}
+                            style={{
+                                zIndex: 10,
+                                position: 'absolute',
+                                top: '55%',
+                                transform: "translateY(-50%)",
+                                right: '8px'
+                            }}
                         >{
                             isShowPassword ? (
                             <EyeFilled />

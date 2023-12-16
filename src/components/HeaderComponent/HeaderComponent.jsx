@@ -29,6 +29,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
         await userService.logOutUser();
         dispatch(resetUser())
         setLoading(false);
+        navigate('/sign-in')
     }
 
     useEffect(() => {
@@ -72,8 +73,8 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
     }
 
     return (
-        <div style={{ width: '100%', display: 'flex', background: 'rgb(26, 148, 255)', justifyContent: 'center' }}>
-            <WrapperHeader style={{justifyContent: isHiddenCart && isHiddenSearch ?  'space-between' : 'unset'}}>
+        <div style={{ width: '100%', display: 'flex', background: '#9255FD', justifyContent: 'center' }}>
+            <WrapperHeader style={{justifyContent: isHiddenCart && isHiddenSearch ?  'space-between' : 'unset', background: '#9255FD'}}>
                 <Col span={5}>
                     <WrapperTextHeader style={{cursor: 'pointer'}} to='/'>SHOP CONG NGHE</WrapperTextHeader>
                 </Col>
@@ -88,6 +89,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                             // enterButton="Search"
                             // size="large"
                             onChange={onSearch}
+                            bgcButton="#5a20c1"
                         />
                     </Col>
                 )}
@@ -100,14 +102,14 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                                     width: '30px',
                                     borderRadius: '50%',
                                     objectFit: 'cover'
-                                }} alt='user'/>
+                                }} alt='avatar'/>
                             ): (
                                 <UserOutlined style={{ fontSize: '30px' }} />
                             )}
                             {user?.access_token ? (
                                 <>
                                     <Popover content={content} trigger="click" open={isOpenPopup}>
-                                        <div style={{ cursor: 'pointer' }} onClick={() => setIsOpenPopup((prev) => !prev)}>{userName.length ? userName : user?.email}</div>
+                                        <div style={{ cursor: 'pointer',maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis' }} onClick={() => setIsOpenPopup((prev) => !prev)}>{userName.length ? userName : user?.email}</div>
                                     </Popover>
                                 </>
                             ) : (
@@ -123,7 +125,7 @@ const HeaderComponent = ({ isHiddenSearch = false, isHiddenCart = false }) => {
                     </Loading>
                     {!isHiddenCart && (
                         <div onClick={() => navigate('/order')} style={{cursor: 'pointer'}}>
-                            <Badge count={order?.orderItems?.length} size="small">
+                            <Badge count = {order?.orderItems?.length} size="small">
                                 <ShoppingCartOutlined style={{ fontSize: '24px', color: '#fff' }} />
                             </Badge>
                             <WrapperTextHeaderSmall>Giỏ hàng</WrapperTextHeaderSmall>

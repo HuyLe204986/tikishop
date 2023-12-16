@@ -63,12 +63,12 @@ export const WrapperInfo = styled.div`
 
 export const WrapperTotal = styled.div`
   display: flex;
-   align-items: flex-start; 
-   justify-content: space-between;
-    padding: 17px 20px;
-    background: #fff ;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
+  align-items: flex-start; 
+  justify-content: space-between;
+  padding: 17px 20px;
+  background: #fff ;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 `
 
 export const Lable = styled.span`

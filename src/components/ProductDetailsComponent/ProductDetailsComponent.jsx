@@ -34,6 +34,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const dispatch = useDispatch()
+
     const onChange = (value) => {
         setNumProduct(Number(value));
     };
@@ -82,6 +83,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
     const handleAddOrderProduct = () => {
         if(!user?.id) {
             //dùng location pathname để khi đăng nhập thành công thì vẫn ở trang đặt hàng thay vì homepage
+            //Khôi phục trang trước khi đăng nhập, sau khi đăng nhập,sử dụng nó để điều hướng lại người dùng tới trang cũ
             navigate('/sign-in', {state: location?.pathname})
         }else {
             const orderRedux = order?.orderItems?.find((item) => item.product === productDetails?._id)
@@ -105,13 +107,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
     }
     
     const { isLoading, data: productDetails } = useQuery({
-        queryKey: ['product-details', idProduct], 
+        queryKey: ['product-details', idProduct], // id của sản phẩm cần lấy
         queryFn: fetchGetDetailsProduct, 
         enabled: !!idProduct
     });
     return (
         <Loading isLoading={isLoading}>
-            <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px' }}>
+            <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px', height:'100%' }}>
                 <Col span={10} style={{ borderRight: '1px solid #e5e5e5', paddingRight: '8px' }}>
                     <Image src={productDetails?.image} alt="image-product" preview={true} />
                     <Row style={{ paddingTop: '10px', justifyContent: 'space-between' }}>

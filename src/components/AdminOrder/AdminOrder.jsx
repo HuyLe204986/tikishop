@@ -23,7 +23,7 @@ const AdminOrder = () => {
 
 
   const queryOrder = useQuery({ queryKey: ['orders'], queryFn: getAllOrder })
-  const { isLoading: isLoadingOrders, data: orders } = queryOrder
+  const { isPending: isLoadingOrders, data: orders } = queryOrder
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (

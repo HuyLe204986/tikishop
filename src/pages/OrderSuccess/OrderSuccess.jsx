@@ -7,7 +7,7 @@ import { orderContant } from '../../contant';
 import { convertPrice } from '../../utils';
 
 const OrderSuccess = () => {
-  const order = useSelector((state) => state.order)
+  // const order = useSelector((state) => state.order)
   const location = useLocation()
   const {state} = location
   return (

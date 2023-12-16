@@ -131,7 +131,7 @@ const AdminProduct = () => {
 
     
 
-    const getAllProduct = async () => {
+    const getAllProducts = async () => {
         const res = await productService.getAllProduct();
         return res;
     };
@@ -175,7 +175,7 @@ const AdminProduct = () => {
 
     const queryProduct = useQuery({
         queryKey: ['products'],
-        queryFn: getAllProduct,
+        queryFn: getAllProducts,
     });
     const typeProduct = useQuery({
         queryKey: ['type-product'],
@@ -279,7 +279,7 @@ const AdminProduct = () => {
         {
             title: 'Name',
             dataIndex: 'name',
-            render: (text) => <a>{text}</a>,
+            // render: (text) => <a>{text}</a>,
             sorter: (a, b) => a.name.length - b.name.length,
             ...getColumnSearchProps('name'),
         },
@@ -564,8 +564,6 @@ const AdminProduct = () => {
                         >
                             <Select
                                 name="type"
-                                // defaultValue="lucy"
-                                // style={{ width: 120 }}
                                 value={stateProduct.type}
                                 onChange={handleChangeSelect}
                                 options={renderOptions(typeProduct?.data?.data)}

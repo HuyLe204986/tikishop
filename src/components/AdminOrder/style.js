@@ -19,7 +19,3 @@ export const WrapperUploadFile = styled(Upload)`
         display: none;
     }
 `
-
-export const WrapperNameChart = styled.div`
-
-`

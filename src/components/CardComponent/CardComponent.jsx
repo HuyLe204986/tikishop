@@ -30,16 +30,16 @@ const CardComponent = (props) => {
                     position: 'absolute',
                     top: -1,
                     left: -1,
-                    borderTopLeftRadius: 3,
+                    borderTopLeftRadius: '3px',
                 }}
             />
             <StyleNameProduct>{name}</StyleNameProduct>
             <WrapperReportText>
                 <span style={{ marginRight: '4px' }}>
                     <span>{rating} </span>
-                    <StarFilled style={{ fontSize: '12px', color: '#FFCE3E' }} />
+                    <StarFilled style={{ fontSize: '12px', color: 'rgb(253, 216, 54)' }} />
                 </span>
-                <WrapperStyleTextSell> | Đã bán {selled || 1000}+</WrapperStyleTextSell>
+                <WrapperStyleTextSell> | Đã bán {selled || 0}</WrapperStyleTextSell>
             </WrapperReportText>
             <WrapperPriceText>
                 <span style={{marginRight: '8px'}}>{convertPrice(price)}</span>

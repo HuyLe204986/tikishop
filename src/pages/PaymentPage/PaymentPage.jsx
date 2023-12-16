@@ -112,11 +112,10 @@ const PaymentPage = () => {
       return res
     },
   )
-
+  console.log('mutation add order', mutationAddOrder);
   const handleAddOrder = () => {
     if(user?.access_token && order?.orderItemsSlected && user?.name
       && user?.address && user?.phone && user?.city && priceMemo && user?.id) {
-        // eslint-disable-next-line no-unused-expressions
         mutationAddOrder.mutate(
           { 
             token: user?.access_token, 
@@ -129,32 +128,33 @@ const PaymentPage = () => {
             itemsPrice: priceMemo,
             shippingPrice: diliveryPriceMemo,
             totalPrice: totalPriceMemo,
-            user: user?.id
+            user: user?.id,
+            email: user?.email
           }
         )
       }
   }
 
-  const onSuccessPaypal = (details, data) => {
-    mutationAddOrder.mutate(
-      { 
-        token: user?.access_token, 
-        orderItems: order?.orderItemsSlected, 
-        fullName: user?.name,
-        address:user?.address, 
-        phone:user?.phone,
-        city: user?.city,
-        paymentMethod: payment,
-        itemsPrice: priceMemo,
-        shippingPrice: diliveryPriceMemo,
-        totalPrice: totalPriceMemo,
-        user: user?.id,
-        isPaid :true,
-        paidAt: details.update_time, 
-        email: user?.email
-      }
-    )
-  }
+  // const onSuccessPaypal = (details, data) => {
+  //   mutationAddOrder.mutate(
+  //     { 
+  //       token: user?.access_token, 
+  //       orderItems: order?.orderItemsSlected, 
+  //       fullName: user?.name,
+  //       address:user?.address, 
+  //       phone:user?.phone,
+  //       city: user?.city,
+  //       paymentMethod: payment,
+  //       itemsPrice: priceMemo,
+  //       shippingPrice: diliveryPriceMemo,
+  //       totalPrice: totalPriceMemo,
+  //       user: user?.id,
+  //       isPaid :true,
+  //       paidAt: details.update_time, 
+  //       email: user?.email
+  //     }
+  //   )
+  // }
 
   const {isPending: isLoading, data} = mutationUpdate
   const {data: dataAdd,isPending: isLoadingAddOrder, isSuccess, isError} = mutationAddOrder
@@ -216,25 +216,25 @@ const PaymentPage = () => {
     setPayment(e.target.value)
   }
 
-  const addPaypalScript = async () => {
-    const { data } = await PaymentService.getConfig()
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.src = `https://www.paypal.com/sdk/js?client-id=${data}`
-    script.async = true;
-    script.onload = () => {
-      setSdkReady(true)
-    }
-    document.body.appendChild(script)
-  }
+  // const addPaypalScript = async () => {
+  //   const { data } = await PaymentService.getConfig()
+  //   const script = document.createElement('script')
+  //   script.type = 'text/javascript'
+  //   script.src = `https://www.paypal.com/sdk/js?client-id=${data}`
+  //   script.async = true;
+  //   script.onload = () => {
+  //     setSdkReady(true)
+  //   }
+  //   document.body.appendChild(script)
+  // }
 
-  useEffect(() => {
-    if(!window.paypal) {
-      addPaypalScript()
-    }else {
-      setSdkReady(true)
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(!window.paypal) {
+  //     addPaypalScript()
+  //   }else {
+  //     setSdkReady(true)
+  //   }
+  // }, [])
 
   return (
     <div style={{background: '#f5f5fa', with: '100%', height: '100vh'}}>
@@ -269,7 +269,7 @@ const PaymentPage = () => {
                   <div>
                     <span>Địa chỉ: </span>
                     <span style={{fontWeight: 'bold'}}>{ `${user?.address} ${user?.city}`} </span>
-                    <span onClick={handleChangeAddress} style={{color: 'blue', cursor:'pointer'}}>Thay đổi</span>
+                    <span onClick={handleChangeAddress} style={{color: '#9255FD', cursor:'pointer'}}>Thay đổi</span>
                   </div>
                 </WrapperInfo>
                 <WrapperInfo>
@@ -294,7 +294,7 @@ const PaymentPage = () => {
                   </span>
                 </WrapperTotal>
               </div>
-              {console.log('paypal', payment)}
+              {/* {console.log('paypal', payment)}
               {payment === 'paypal' && sdkReady ? (
   
                 <div style={{width: '320px'}}>
@@ -308,7 +308,8 @@ const PaymentPage = () => {
                     }}
                   />
                 </div>
-              ): (<ButtonComponent
+              ): (<ButtonComponent */}
+              <ButtonComponent
                     onClick={() => handleAddOrder()}
                     size={40}
                     styleButton={{
@@ -321,8 +322,8 @@ const PaymentPage = () => {
                     textButton={'Đặt hàng'}
                     styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
                 ></ButtonComponent>
-              )
-            }
+              {/* )
+            } */}
             </WrapperRight>
           </div>
         </div>

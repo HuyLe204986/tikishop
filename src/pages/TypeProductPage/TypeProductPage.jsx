@@ -51,7 +51,7 @@ const TypeProductPage = () => {
                             span={20}
                             style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
                         >
-                            <WrapperProducts span={20}>
+                            <WrapperProducts >
                                 {products?.filter((pro) => {
                                     if (searchDebounce === '') {
                                         return pro;

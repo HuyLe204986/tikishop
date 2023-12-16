@@ -1,6 +1,7 @@
 import { Checkbox, Form } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+    CustomCheckbox,
     WrapperCountOrder,
     WrapperInfo,
     WrapperItemOrder,
@@ -97,7 +98,7 @@ const OrderPage = () => {
     useEffect(() => {
         if (isOpenModalUpdateInfo) {
             setStateUserDetails({
-                ...stateUserDetails,
+                // ...stateUserDetails,
                 city: user?.city,
                 name: user?.name,
                 address: user?.address,
@@ -108,7 +109,7 @@ const OrderPage = () => {
 
     const priceMemo = useMemo(() => {
         const result = order?.orderItemsSlected?.reduce((total, cur) => {
-            return total + cur.price * cur.amount;
+            return total + ((cur.price * cur.amount));
         }, 0);
         return result;
     }, [order]);
@@ -116,7 +117,7 @@ const OrderPage = () => {
     const priceDiscountMemo = useMemo(() => {
         const result = order?.orderItemsSlected?.reduce((total, cur) => {
             const totalDiscount = cur.discount ? cur.discount : 0;
-            return total + (priceMemo * (totalDiscount * cur.amount)) / 100;
+            return total + (priceMemo * (totalDiscount * cur.amount) / 100);
         }, 0);
         if (Number(result)) {
             return result;
@@ -226,10 +227,10 @@ const OrderPage = () => {
                         </WrapperStyleHeaderDilivery>
                         <WrapperStyleHeader>
                             <span style={{ display: 'inline-block', width: '390px' }}>
-                                <Checkbox
+                                <CustomCheckbox
                                     onChange={handleOnchangeCheckAll}
                                     checked={listChecked?.length === order?.orderItems?.length}
-                                ></Checkbox>
+                                ></CustomCheckbox>
                                 <span> Tất cả ({order?.orderItems?.length} sản phẩm)</span>
                             </span>
                             <div
@@ -258,11 +259,11 @@ const OrderPage = () => {
                                                 gap: 4,
                                             }}
                                         >
-                                            <Checkbox
+                                            <CustomCheckbox
                                                 onChange={onChange}
                                                 value={order?.product}
                                                 checked={listChecked.includes(order?.product)}
-                                            ></Checkbox>
+                                            ></CustomCheckbox>
                                             <img
                                                 src={order?.image}
                                                 style={{ width: '77px', height: '79px', objectFit: 'cover' }}

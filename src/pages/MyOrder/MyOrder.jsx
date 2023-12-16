@@ -92,13 +92,19 @@ const MyOrder = () => {
                 <div style={{height: '100%', width: '1270px', margin: '0 auto'}}>
                     <h4>Đơn hàng của tôi</h4>
                     <WrapperListOrder>
-                        {data?.map((order) => {
+                        {data && data?.map((order) => {
                         return (
                             <WrapperItemOrder key={order?._id}>
                             <WrapperStatus>
                                 <span style={{fontSize: '14px', fontWeight: 'bold'}}>Trạng thái</span>
-                                <div><span style={{color: 'rgb(255, 66, 78)'}}>Giao hàng: </span>{`${order.isDelivered ? 'Đã giao hàng': 'Chưa giao hàng'}`}</div>
-                                <div><span style={{color: 'rgb(255, 66, 78)'}}>Thanh toán:</span>{`${order.isPaid ? 'Đã thanh toán': 'Chưa thanh toán'}`}</div>
+                                <div>
+                                    <span style={{color: 'rgb(255, 66, 78)'}}>Giao hàng: </span>
+                                    <span style={{color: 'rgb(90, 32, 193)', fontWeight: 'bold'}}>{`${order.isDelivered ? 'Đã giao hàng': 'Chưa giao hàng'}`}</span>
+                                </div>
+                                <div>
+                                    <span style={{color: 'rgb(255, 66, 78)'}}>Thanh toán:</span>
+                                    <span style={{color: 'rgb(90, 32, 193)', fontWeight: 'bold'}}>{`${order.isPaid ? 'Đã thanh toán': 'Chưa thanh toán'}`}</span>
+                                </div>
                             </WrapperStatus>
                             {renderProduct(order?.orderItems)}
                             <WrapperFooterItem>

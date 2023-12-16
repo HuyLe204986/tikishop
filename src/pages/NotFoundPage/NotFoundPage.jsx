@@ -2,7 +2,7 @@ import React from "react";
 
 const NotFoundPage = () => {
     return (
-        <div>NotFound Page</div>
+        <div>NotFound Page thêm ảnh vào</div>
     )
 }
 

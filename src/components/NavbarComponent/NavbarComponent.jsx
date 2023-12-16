@@ -3,8 +3,8 @@ import { WrapperContent, WrapperLabelText, WrapperTextPrice, WrapperTextValue } 
 import { Checkbox, Rate } from 'antd';
 
 const NavbarComponent = () => {
+    const onChange = () => {};
     const renderContent = (type, options) => {
-        const onChange = () => {};
         switch (type) {
             case 'text':
                 return options.map((option) => {
